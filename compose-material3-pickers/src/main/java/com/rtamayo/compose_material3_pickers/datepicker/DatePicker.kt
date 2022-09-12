@@ -1,5 +1,6 @@
 package com.rtamayo.compose_material3_pickers.datepicker
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -12,19 +13,25 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.rtamayo.compose_material3_pickers.PickerDialog
 import com.rtamayo.compose_material3_pickers.datepicker.DateMapper.getDateRange
+import com.rtamayo.compose_material3_pickers.datepicker.DateMapper.getMonthList
 import com.rtamayo.compose_material3_pickers.datepicker.components.CalendarInputSelector
 import com.rtamayo.compose_material3_pickers.datepicker.components.Day
+import com.rtamayo.compose_material3_pickers.datepicker.models.Month
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 
 @Composable
@@ -36,6 +43,9 @@ fun DatePicker(
     onDismissRequest: () -> Unit,
 ) {
     val currentDate by remember { mutableStateOf(startDate) }
+    val range = getDateRange(startDate, maxDate)
+
+    val monthList = getMonthList(range)
 
     PickerDialog(
         onDismissRequest = onDismissRequest,
@@ -62,15 +72,17 @@ fun DatePicker(
             }
         },
         content = {
-            val calendarRange = getDateRange(minDate, maxDate)
-
-            DatePickerContent()
+            DatePickerContent(
+                monthList = monthList
+            )
         }
     )
 }
 
 @Composable
-internal fun DatePickerContent() {
+internal fun DatePickerContent(
+    monthList: List<Month>
+) {
 
     var showCalendar by remember { mutableStateOf(true) }
     Column {
@@ -81,6 +93,7 @@ internal fun DatePickerContent() {
         }
         if(showCalendar) {
             CalendarSelector(
+                monthList = monthList,
                 onNextMonth = {},
                 onPreviousMonth = {}
             )
@@ -97,6 +110,7 @@ internal fun DatePickerContent() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
 fun CalendarSelector(
+    monthList: List<Month>,
     onPreviousMonth: () -> Unit,
     onNextMonth: () -> Unit
 ) {
@@ -105,6 +119,9 @@ fun CalendarSelector(
         val pagerState = rememberPagerState()
         val scope = rememberCoroutineScope()
 
+        var currentPage by remember {
+            mutableStateOf(0)
+        }
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -114,7 +131,7 @@ fun CalendarSelector(
                     showYearSelector = !showYearSelector
                 },
                 label = {
-                    Text(text = "November 2022")
+                    Text(text = monthList[pagerState.currentPage].monthName.name)
                 },
                 trailingIcon = {
                     Icon(
@@ -129,7 +146,8 @@ fun CalendarSelector(
             if (!showYearSelector) {
                 IconButton(onClick = {
                     scope.launch {
-                        pagerState.animateScrollToPage(5)
+                        if (currentPage > 0) currentPage -= 1
+                        pagerState.animateScrollToPage(currentPage)
                     }
                 }) {
                     Icon(
@@ -139,7 +157,8 @@ fun CalendarSelector(
                 }
                 IconButton(onClick = {
                     scope.launch {
-                        pagerState.animateScrollToPage(1)
+                        if(currentPage < monthList.size) currentPage += 1
+                        pagerState.animateScrollToPage(currentPage)
                     }
                 }) {
                     Icon(
@@ -154,6 +173,7 @@ fun CalendarSelector(
         } else {
             Calendar(
                 LocalDate.now(),
+                monthList,
                 pagerState
             )
         }
@@ -220,6 +240,7 @@ val daysInTheWeek = List(31) { i -> "${i+1}" }
 @Composable
 fun Calendar(
     date: LocalDate,
+    monthList: List<Month>,
     pagerState: PagerState
 ) {
     Column {
@@ -238,25 +259,35 @@ fun Calendar(
             }
         }
         HorizontalPager(
-            count = 10,
+            count = monthList.size,
             state = pagerState
         ) { page ->
-
-            val currentMonth = List(date.lengthOfMonth()) { day ->  }
-
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                columns = GridCells.Fixed(7)
-            ) {
-                items(daysInTheWeek) { day ->
-                    Day(value = day, {})
-                }
-            }
+            val month = monthList[page]
+            CalendarGrid(month)
         }
     }
 
+}
+
+@Composable
+fun CalendarGrid(
+    month: Month
+) {
+    val dayOfWeek = month.firstDayOfTheWeek.value
+    Log.d("Saya", "${month.monthName.name} - $dayOfWeek")
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        columns = GridCells.Fixed(7)
+    ) {
+        items(dayOfWeek) {
+            Box(modifier = Modifier)
+        }
+        items(month.days!!) { day ->
+            Day(value = day.toString(), {})
+        }
+    }
 }
 
 @Preview
