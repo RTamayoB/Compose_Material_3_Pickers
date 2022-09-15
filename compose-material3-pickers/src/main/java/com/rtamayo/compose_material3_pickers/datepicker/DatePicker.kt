@@ -1,51 +1,48 @@
 package com.rtamayo.compose_material3_pickers.datepicker
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.rtamayo.compose_material3_pickers.PickerDialog
-import com.rtamayo.compose_material3_pickers.datepicker.DateMapper.getDateRange
+import com.rtamayo.compose_material3_pickers.datepicker.DateMapper.getMonth
 import com.rtamayo.compose_material3_pickers.datepicker.DateMapper.getMonthList
+import com.rtamayo.compose_material3_pickers.datepicker.DateMapper.getPage
+import com.rtamayo.compose_material3_pickers.datepicker.DateMapper.getYearList
+import com.rtamayo.compose_material3_pickers.datepicker.components.Calendar
 import com.rtamayo.compose_material3_pickers.datepicker.components.CalendarInputSelector
-import com.rtamayo.compose_material3_pickers.datepicker.components.Day
+import com.rtamayo.compose_material3_pickers.datepicker.components.Year
 import com.rtamayo.compose_material3_pickers.datepicker.models.Month
+import com.rtamayo.compose_material3_pickers.datepicker.utils.DateFormatter.formatMonth
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
+//Use Ceil/Floor functions to return minus 100 years and plus 100 years
+val MIN_DATE = LocalDate.now().minusYears(50)
+val MAX_DATE = LocalDate.now().plusYears(50)
 
 @Composable
 fun DatePicker(
     startDate: LocalDate = LocalDate.now(),
-    minDate: LocalDate = LocalDate.MIN,
-    maxDate: LocalDate = LocalDate.MAX,
+    minDate: LocalDate = MIN_DATE,
+    maxDate: LocalDate = MAX_DATE,
     onDateSelected: (LocalDate) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    val currentDate by remember { mutableStateOf(startDate) }
-    val range = getDateRange(startDate, maxDate)
+    var currentDate by remember { mutableStateOf(startDate) }
 
-    val monthList = getMonthList(range)
+    val monthList = getMonthList(minDate, maxDate)
 
     PickerDialog(
         onDismissRequest = onDismissRequest,
@@ -73,7 +70,11 @@ fun DatePicker(
         },
         content = {
             DatePickerContent(
-                monthList = monthList
+                date = currentDate,
+                monthList = monthList,
+                onDateChanged = {
+                    currentDate = it
+                }
             )
         }
     )
@@ -81,21 +82,23 @@ fun DatePicker(
 
 @Composable
 internal fun DatePickerContent(
-    monthList: List<Month>
+    date: LocalDate,
+    monthList: List<Month>,
+    onDateChanged: (LocalDate) -> Unit,
 ) {
 
     var showCalendar by remember { mutableStateOf(true) }
     Column {
         CalendarInputSelector(
-            LocalDate.now()
+            localDate = date
         ) { isShowingCalendar ->
             showCalendar = isShowingCalendar
         }
         if(showCalendar) {
             CalendarSelector(
+                date = date,
                 monthList = monthList,
-                onNextMonth = {},
-                onPreviousMonth = {}
+                onDateChanged = onDateChanged
             )
         }
         else {
@@ -110,9 +113,9 @@ internal fun DatePickerContent(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
 fun CalendarSelector(
+    date: LocalDate,
     monthList: List<Month>,
-    onPreviousMonth: () -> Unit,
-    onNextMonth: () -> Unit
+    onDateChanged: (LocalDate) -> Unit,
 ) {
     Column {
         var showYearSelector by remember { mutableStateOf(false) }
@@ -122,16 +125,22 @@ fun CalendarSelector(
         var currentPage by remember {
             mutableStateOf(0)
         }
+        LaunchedEffect(key1 = true) {
+            scope.launch {
+                currentPage = getPage(monthList, date)
+                pagerState.scrollToPage(currentPage)
+            }
+        }
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            // TODO: Make custom button
             AssistChip(
                 onClick = {
                     showYearSelector = !showYearSelector
                 },
                 label = {
-                    Text(text = monthList[pagerState.currentPage].monthName.name)
+                    val month = monthList[pagerState.currentPage]
+                    Text(text = formatMonth(month.monthName.name, month.year))
                 },
                 trailingIcon = {
                     Icon(
@@ -147,7 +156,7 @@ fun CalendarSelector(
                 IconButton(onClick = {
                     scope.launch {
                         if (currentPage > 0) currentPage -= 1
-                        pagerState.animateScrollToPage(currentPage)
+                        pagerState.scrollToPage(currentPage)
                     }
                 }) {
                     Icon(
@@ -158,7 +167,7 @@ fun CalendarSelector(
                 IconButton(onClick = {
                     scope.launch {
                         if(currentPage < monthList.size) currentPage += 1
-                        pagerState.animateScrollToPage(currentPage)
+                        pagerState.scrollToPage(currentPage)
                     }
                 }) {
                     Icon(
@@ -169,12 +178,26 @@ fun CalendarSelector(
             }
         }
         if (showYearSelector) {
-            YearGrid()
+            YearGrid(
+                month = monthList[pagerState.currentPage],
+                monthList = monthList,
+                // TODO: Make this jump user to same month but of selected year or in default the closest month
+                onYearSelected = { month, year ->
+                    showYearSelector = false
+                    val currentYear = monthList[pagerState.currentPage].year
+                    val selectedMonth = getMonth(monthList, currentYear, month, year)
+                    currentPage = monthList.indexOf(selectedMonth)
+                    scope.launch {
+                        pagerState.scrollToPage(currentPage)
+                    }
+                }
+            )
         } else {
             Calendar(
-                LocalDate.now(),
+                date,
                 monthList,
-                pagerState
+                pagerState,
+                onDateChanged = onDateChanged
             )
         }
     }
@@ -205,87 +228,25 @@ fun TextFieldSelector(
     )
 }
 
-val years = List(100) { i -> "${i+2022}" }
-
 @Composable
-fun YearGrid() {
+fun YearGrid(
+    month: Month,
+    monthList: List<Month>,
+    onYearSelected: (month: Month, year: Int) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        modifier = Modifier.padding(horizontal = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(years) { year ->
-            YearItem(year = year)
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun YearItem(
-    year: String,
-) {
-    TextButton(modifier = Modifier, onClick = {}) {
-        Text(
-            text = year,
-            textAlign = TextAlign.Center
-        )
-    }
-
-}
-
-val weekLabels = listOf("D", "L", "M", "M", "J", "V", "S")
-val daysInTheWeek = List(31) { i -> "${i+1}" }
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun Calendar(
-    date: LocalDate,
-    monthList: List<Month>,
-    pagerState: PagerState
-) {
-    Column {
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            items(
-                items = weekLabels
-            ) {
-                Text(
-                    text = it,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                )
-            }
-        }
-        HorizontalPager(
-            count = monthList.size,
-            state = pagerState
-        ) { page ->
-            val month = monthList[page]
-            CalendarGrid(month)
-        }
-    }
-
-}
-
-@Composable
-fun CalendarGrid(
-    month: Month
-) {
-    val dayOfWeek = month.firstDayOfTheWeek.value
-    Log.d("Saya", "${month.monthName.name} - $dayOfWeek")
-    LazyVerticalGrid(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        columns = GridCells.Fixed(7)
-    ) {
-        items(dayOfWeek) {
-            Box(modifier = Modifier)
-        }
-        items(month.days!!) { day ->
-            Day(value = day.toString(), {})
+        //TODO: Get list of Years
+        val yearList = getYearList(monthList)
+        items(yearList) { year ->
+            Year(
+                month,
+                year = year,
+                onYearSelected = onYearSelected
+            )
         }
     }
 }

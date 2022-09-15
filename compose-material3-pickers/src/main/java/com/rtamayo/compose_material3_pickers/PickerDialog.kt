@@ -77,7 +77,7 @@ private fun PickerDialogContent(
     ) {
         Column(
             modifier = modifier
-                .sizeIn(minWidth = MinWidth, maxWidth = MaxWidth)
+                .sizeIn(minWidth = MinWidth, maxWidth = MaxWidth, maxHeight = MaxHeight)
                 .padding(DialogPadding)
         ) {
             CompositionLocalProvider(LocalContentColor provides titleContentColor ) {
@@ -99,7 +99,6 @@ private fun PickerDialogContent(
                     Box(
                         Modifier
                             .weight(weight = 1f, fill = false)
-                            .padding(ContentPadding)
                             .align(Alignment.CenterHorizontally)
                     ) {
                         content()
@@ -114,7 +113,8 @@ private fun PickerDialogContent(
 
 private val MinWidth = 280.dp
 private val MaxWidth = 560.dp
-private val DialogPadding = PaddingValues(all = 24.dp)
-private val TitlePadding = PaddingValues(bottom = 16.dp)
+private val MaxHeight = 512.dp
+private val DialogPadding = PaddingValues(all = 12.dp)
+private val TitlePadding = PaddingValues( start = 12.dp, bottom = 16.dp)
 private val ContentPadding = PaddingValues(bottom = 24.dp)
 private val ButtonsMainAxisSpacing = 8.dp

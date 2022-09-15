@@ -2,26 +2,26 @@ package com.rtamayo.compose_material3_pickers.datepicker
 
 import android.util.Log
 import com.rtamayo.compose_material3_pickers.datepicker.models.Day
+import com.rtamayo.compose_material3_pickers.datepicker.utils.DateIterator
 import com.rtamayo.compose_material3_pickers.datepicker.models.Month as ModelMonth
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year
-import java.time.temporal.ChronoUnit
+import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.max
 
 object DateMapper {
 
-
-    fun getDateRange(startDate: LocalDate, endDate: LocalDate): List<LocalDate> {
-        val daysList = mutableListOf<LocalDate>()
-        var range = ChronoUnit.DAYS.between(startDate, startDate.plusDays(300))
-        for (i in 0 until range) {
-            daysList.add(startDate.plusDays(i + 1))
-        }
-        return daysList
-    }
-
-    fun getMonthList(calendarRange: List<LocalDate>): List<ModelMonth> {
-
+    fun getMonthList(startDate: LocalDate, endDate: LocalDate): List<ModelMonth> {
+        /*
+        val yearMin = (100.0 * floor(abs(startDate.year / 100.0))).toInt()
+        val yearMax = (100.0 * ceil(abs(endDate.year / 100.0))).toInt()
+        val min = LocalDate.now().withYear(yearMin).withDayOfYear(1)
+        val max = LocalDate.now().withYear(yearMax).withDayOfYear(endDate.lengthOfYear())
+        */
+        val calendarRange = DateIterator(startDate, endDate).toList()
         val monthList = mutableListOf<ModelMonth>()
         val days = mutableListOf<Day>()
 
@@ -67,5 +67,51 @@ object DateMapper {
         }
 
         return monthList
+    }
+
+    fun getYearList(monthList: List<ModelMonth>) : List<Int> {
+        val yearList = mutableListOf<Int>()
+        var year = monthList.first().year
+        yearList.add(year)
+        for (month in monthList) {
+            if(month.year != year) {
+                yearList.add(month.year)
+                year = month.year
+            }
+        }
+
+        return  yearList.toList()
+    }
+
+    fun getMonth(monthList: List<ModelMonth>, currentYear: Int, month: ModelMonth, year: Int): ModelMonth {
+
+        var selectedMonth = monthList.first()
+        val list = if (currentYear <= year) {
+            monthList
+        } else {
+            monthList.reversed()
+        }
+        for (m in list) {
+            if(m.monthName == month.monthName && m.year == year) {
+                selectedMonth = m
+                break
+            }
+            selectedMonth = m
+        }
+
+        return selectedMonth
+    }
+
+    fun getPage(monthList: List<ModelMonth>, date: LocalDate): Int {
+
+        for (month in monthList) {
+            for (day in month.days) {
+                if (day.date == date) {
+                    return monthList.indexOf(month)
+                }
+            }
+        }
+
+        return 0
     }
 }

@@ -7,7 +7,7 @@ data class Month(
     val monthName: Month,
     val year: Int,
     val firstDayOfTheWeek: DayOfWeek,
-    var days: List<Day>? = null,
+    var days: List<Day> = emptyList(),
 ) {
 
 
