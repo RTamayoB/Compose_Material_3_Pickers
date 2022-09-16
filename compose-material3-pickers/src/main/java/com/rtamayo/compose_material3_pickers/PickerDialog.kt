@@ -70,7 +70,8 @@ private fun PickerDialogContent(
     contentColor: Color,
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier
+            .wrapContentHeight(),
         shape = shape,
         color = containerColor,
         tonalElevation = tonalElevation

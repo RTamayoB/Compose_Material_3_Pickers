@@ -1,16 +1,10 @@
-package com.rtamayo.compose_material3_pickers.datepicker
+package com.rtamayo.compose_material3_pickers.datepicker.utils
 
-import android.util.Log
 import com.rtamayo.compose_material3_pickers.datepicker.models.Day
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateIterator
 import com.rtamayo.compose_material3_pickers.datepicker.models.Month as ModelMonth
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year
-import kotlin.math.abs
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.max
 
 object DateMapper {
 

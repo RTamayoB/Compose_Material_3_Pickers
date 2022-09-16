@@ -13,7 +13,7 @@ import com.rtamayo.compose_material3_pickers.datepicker.utils.DateFormatter.form
 import java.time.LocalDate
 
 @Composable
-internal fun CalendarInputSelector(
+internal fun InputSelector(
     localDate: LocalDate,
     onShowCalendar: (Boolean) -> Unit
 ) {

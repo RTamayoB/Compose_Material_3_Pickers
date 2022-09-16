@@ -54,6 +54,8 @@ class MainActivity : ComponentActivity() {
                 if (showDialog) {
                     DatePicker(
                         startDate = date,
+                        minDate = LocalDate.now(),
+                        maxDate = LocalDate.now().plusYears(50),
                         onDateSelected = {
                             showDialog = false
                             date = it

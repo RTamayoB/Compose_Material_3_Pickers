@@ -1,10 +1,7 @@
 package com.rtamayo.compose_material3_pickers.datepicker.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -16,14 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.datepicker.models.Month
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateFormatter.formatMonth
-import java.time.LocalDate
-import java.util.logging.Filter
 
-@OptIn(ExperimentalMaterial3Api::class)
 //TODO Fix selected padding
 @Composable
-fun Year(
+internal fun Year(
     month: Month,
     year: Int,
     onYearSelected:(month: Month, year: Int) -> Unit,

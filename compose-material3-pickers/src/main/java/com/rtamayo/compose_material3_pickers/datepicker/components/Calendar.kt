@@ -1,6 +1,5 @@
 package com.rtamayo.compose_material3_pickers.datepicker.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,17 +10,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.rtamayo.compose_material3_pickers.R
 import com.rtamayo.compose_material3_pickers.datepicker.models.Month
 import java.time.LocalDate
+import com.rtamayo.compose_material3_pickers.R
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -31,8 +28,7 @@ internal fun Calendar(
     pagerState: PagerState,
     onDateChanged: (LocalDate) -> Unit
 ) {
-    // TODO: Add string-array-resource
-    val weekLabels = listOf<String>("S", "M", "T", "W", "T", "F", "S")
+    val weekLabels = stringArrayResource(id = R.array.week_labels)
     Column {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -85,9 +81,13 @@ internal fun CalendarGrid(
 ) {
     val dayOfWeek = month.firstDayOfTheWeek.value
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+        ,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        columns = GridCells.Fixed(7)
+        columns = GridCells.Fixed(7),
+        userScrollEnabled = false
     ) {
         items(dayOfWeek) {
             Box(modifier = Modifier)
