@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.rtamayo.compose_material3_pickers.datepicker.models.Month
+import com.rtamayo.compose_material3_pickers.date.models.Month
 import java.time.LocalDate
 import com.rtamayo.compose_material3_pickers.R
 

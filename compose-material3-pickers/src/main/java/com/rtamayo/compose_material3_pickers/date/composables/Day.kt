@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.datepicker.models.Day
+import com.rtamayo.compose_material3_pickers.date.models.Day
 import java.time.LocalDate
 
 @Composable

@@ -12,7 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.datepicker.models.Month
+import com.rtamayo.compose_material3_pickers.date.models.Month
 
 //TODO Fix selected padding
 @Composable

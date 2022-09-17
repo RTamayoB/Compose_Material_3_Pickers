@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.datepicker.models.Month
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateMapper
+import com.rtamayo.compose_material3_pickers.date.models.Month
+import com.rtamayo.compose_material3_pickers.date.utils.DateMapper
 
 @Composable
 fun YearGrid(

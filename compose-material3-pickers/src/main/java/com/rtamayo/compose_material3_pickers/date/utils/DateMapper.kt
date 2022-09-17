@@ -1,7 +1,7 @@
-package com.rtamayo.compose_material3_pickers.datepicker.utils
+package com.rtamayo.compose_material3_pickers.date.utils
 
-import com.rtamayo.compose_material3_pickers.datepicker.models.Day
-import com.rtamayo.compose_material3_pickers.datepicker.models.Month as ModelMonth
+import com.rtamayo.compose_material3_pickers.date.models.Day
+import com.rtamayo.compose_material3_pickers.date.models.Month as ModelMonth
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year

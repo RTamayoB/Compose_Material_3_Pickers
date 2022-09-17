@@ -14,9 +14,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
-import com.rtamayo.compose_material3_pickers.datepicker.models.Month
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateFormatter
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateMapper
+import com.rtamayo.compose_material3_pickers.date.models.Month
+import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
+import com.rtamayo.compose_material3_pickers.date.utils.DateMapper
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -102,7 +102,8 @@ internal fun CalendarTopBar(
         AssistChip(
             onClick = onYearClick,
             label = {
-                Text(text = DateFormatter.formatMonth(month.monthName.name, month.year))
+                val date = LocalDate.of(month.year, month.monthName, 1)
+                Text(text = format(date, "MMMM yyyy"))
             },
             trailingIcon = {
                 Icon(

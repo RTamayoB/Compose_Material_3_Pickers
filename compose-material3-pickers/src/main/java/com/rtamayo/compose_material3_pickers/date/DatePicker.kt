@@ -6,12 +6,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.min
 import com.rtamayo.compose_material3_pickers.PickerDialog
+import com.rtamayo.compose_material3_pickers.date.composables.DateInputPicker
 import com.rtamayo.compose_material3_pickers.datepicker.components.*
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateMapper.getMonthList
-import com.rtamayo.compose_material3_pickers.datepicker.models.Month
+import com.rtamayo.compose_material3_pickers.date.utils.DateMapper.getMonthList
+import com.rtamayo.compose_material3_pickers.date.models.Month
 import java.time.LocalDate
 
 //Use Ceil/Floor functions to return minus 100 years and plus 100 years

@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.datepicker.components
+package com.rtamayo.compose_material3_pickers.date.composables
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -11,11 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateFormatter.formatDate
+import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.util.*
 
 // TODO: Make Ok button disable on errors, Create UiState class
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +33,7 @@ fun DateInputPicker(
     var dateFormatted by remember { mutableStateOf(date.format(formatter)) }
     var invalidFormat by remember { mutableStateOf(false) }
     var outOfRange by remember { mutableStateOf(false) }
+
 
     var newDate by remember { mutableStateOf(date) }
     Column(
@@ -82,7 +82,7 @@ fun DateInputPicker(
                 ErrorText(value = "Example: ${LocalDate.now().format(formatter)}")
             }
             if (outOfRange) {
-                ErrorText(value = "Out of range: ${formatDate(localDate = newDate)}")
+                ErrorText(value = "Out of range: ${format(newDate, "dd MMM yyy")}")
             }
         }
     }

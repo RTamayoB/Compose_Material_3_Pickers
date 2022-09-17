@@ -9,7 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.datepicker.utils.DateFormatter.formatDate
+import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
 import java.time.LocalDate
 
 @Composable
@@ -25,7 +25,7 @@ internal fun InputSelector(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = formatDate(localDate),
+            text = format(localDate, "dd MMM yyyy"),
             style = Typography().headlineLarge,
         )
         Spacer(modifier = Modifier.weight(1F))

@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.datepicker.models
+package com.rtamayo.compose_material3_pickers.date.models
 
 import java.time.LocalDate
 
