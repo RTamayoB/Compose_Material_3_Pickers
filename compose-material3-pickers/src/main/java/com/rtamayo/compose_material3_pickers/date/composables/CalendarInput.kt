@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.datepicker.components
+package com.rtamayo.compose_material3_pickers.date.composables
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +17,8 @@ import com.google.accompanist.pager.rememberPagerState
 import com.rtamayo.compose_material3_pickers.date.models.Month
 import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
 import com.rtamayo.compose_material3_pickers.date.utils.DateMapper
+import com.rtamayo.compose_material3_pickers.datepicker.components.Calendar
+import com.rtamayo.compose_material3_pickers.datepicker.components.CalendarList
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -102,7 +104,7 @@ internal fun CalendarTopBar(
         AssistChip(
             onClick = onYearClick,
             label = {
-                val date = LocalDate.of(month.year, month.monthName, 1)
+                val date = LocalDate.of(month.year, month.month, 1)
                 Text(text = format(date, "MMMM yyyy"))
             },
             trailingIcon = {
@@ -129,5 +131,23 @@ internal fun CalendarTopBar(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun CalendarRangeInput(
+    startDate: LocalDate,
+    endDate: LocalDate,
+    monthList: List<Month>,
+    onDateChanged: (startDate: LocalDate, endDate: LocalDate) -> Unit,
+) {
+    Column {
+        WeekLabels()
+        CalendarList(
+            startDate = startDate,
+            endDate = endDate,
+            monthList = monthList,
+            onDateChanged = onDateChanged
+        )
     }
 }

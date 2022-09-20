@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.date.composables
+package com.rtamayo.compose_material3_pickers.date
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -45,7 +45,6 @@ fun DateInputPicker(
                 dateFormatted = it
                 try {
                     newDate = LocalDate.parse(dateFormatted, formatter)
-                    Log.d("onth", newDate.month.name)
                     onDateChange(newDate)
                     outOfRange = !(newDate.isAfter(minDate) && newDate.isBefore(maxDate))
                     invalidFormat = false
@@ -88,7 +87,6 @@ fun DateInputPicker(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ErrorText(
     value: String

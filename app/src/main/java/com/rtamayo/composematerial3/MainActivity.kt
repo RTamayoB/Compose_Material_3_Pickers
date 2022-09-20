@@ -21,7 +21,8 @@ import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.datepicker.DatePicker
+import com.rtamayo.compose_material3_pickers.date.DateRangePicker
+import com.rtamayo.compose_material3_pickers.date.TestDateRangePicker
 import com.rtamayo.compose_material3_pickers.timepicker.TimePicker
 import com.rtamayo.composematerial3.ui.theme.ComposeMaterial3Theme
 import java.time.LocalDate
@@ -52,6 +53,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 if (showDialog) {
+                    /*
                     DatePicker(
                         startDate = date,
                         minDate = LocalDate.now(),
@@ -64,6 +66,13 @@ class MainActivity : ComponentActivity() {
                             showDialog = false
                         }
                     )
+                     */
+                    TestDateRangePicker(
+                        startDate = LocalDate.now(),
+                        onDateSelected = {}
+                    ) {
+                        
+                    }
                 }
 
             }

@@ -4,7 +4,7 @@ import java.time.DayOfWeek
 import java.time.Month
 
 data class Month(
-    val monthName: Month,
+    val month: Month,
     val year: Int,
     val firstDayOfTheWeek: DayOfWeek,
     var days: List<Day> = emptyList(),
@@ -12,6 +12,6 @@ data class Month(
 
 
     override fun toString(): String {
-        return "${monthName.name} - ${days?.size} "
+        return "${month.name} - ${days?.size} "
     }
 }

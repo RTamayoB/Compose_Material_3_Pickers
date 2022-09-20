@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.datepicker
+package com.rtamayo.compose_material3_pickers.date
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -7,10 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.PickerDialog
-import com.rtamayo.compose_material3_pickers.date.composables.DateInputPicker
-import com.rtamayo.compose_material3_pickers.datepicker.components.*
+import com.rtamayo.compose_material3_pickers.date.composables.CalendarInput
+import com.rtamayo.compose_material3_pickers.date.composables.InputSelector
 import com.rtamayo.compose_material3_pickers.date.utils.DateMapper.getMonthList
-import com.rtamayo.compose_material3_pickers.date.models.Month
 import java.time.LocalDate
 
 //Use Ceil/Floor functions to return minus 100 years and plus 100 years
@@ -27,14 +26,11 @@ fun DatePicker(
 ) {
     var currentDate by remember { mutableStateOf(startDate) }
 
-    val monthList = getMonthList(minDate, maxDate)
-
     PickerDialog(
         onDismissRequest = onDismissRequest,
         title = {
             Text(
                 text = "Select Date",
-                style = Typography().labelSmall
             )
         },
         confirmButton = {
@@ -58,25 +54,26 @@ fun DatePicker(
                 date = currentDate,
                 minDate = minDate,
                 maxDate = maxDate,
-                monthList = monthList,
                 onDateChanged = {
                     currentDate = it
                 }
             )
-        }
+        },
     )
 }
 
 @Composable
 internal fun DatePickerContent(
     date: LocalDate,
-    monthList: List<Month>,
     minDate: LocalDate,
     maxDate: LocalDate,
     onDateChanged: (LocalDate) -> Unit,
 ) {
 
     var showCalendar by remember { mutableStateOf(true) }
+
+    val monthList = getMonthList(minDate, maxDate)
+
     Column {
         InputSelector(
             localDate = date

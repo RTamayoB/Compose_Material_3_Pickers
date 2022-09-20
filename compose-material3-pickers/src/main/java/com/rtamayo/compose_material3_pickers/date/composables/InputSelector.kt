@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.datepicker.components
+package com.rtamayo.compose_material3_pickers.date.composables
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -17,17 +17,53 @@ internal fun InputSelector(
     localDate: LocalDate,
     onShowCalendar: (Boolean) -> Unit
 ) {
-    var isShowingCalendar by remember { mutableStateOf(true) }
-    Row(
+    InputSelectorContent(
+        dateContent = {
+            Text(
+                text = format(localDate, "dd MMM yyyy"),
+            )
+        },
+        onShowCalendar = onShowCalendar,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 12.dp)
+    )
+}
+
+@Composable
+internal fun InputSelector(
+    startDate: LocalDate,
+    endDate: LocalDate,
+    onShowCalendar: (Boolean) -> Unit
+) {
+    InputSelectorContent(
+        dateContent = {
+            Text(
+                text = "${format(startDate, "MMM dd")} - ${format(endDate, "MMM dd")}",
+            )
+        },
+        onShowCalendar = onShowCalendar,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 60.dp, end = 12.dp, bottom = 24.dp)
+    )
+}
+
+@Composable
+private fun InputSelectorContent(
+    dateContent: (@Composable () -> Unit),
+    onShowCalendar: (Boolean) -> Unit,
+    modifier: Modifier
+) {
+    var isShowingCalendar by remember { mutableStateOf(true) }
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = format(localDate, "dd MMM yyyy"),
-            style = Typography().headlineLarge,
-        )
+        val textStyle = MaterialTheme.typography.headlineLarge
+        ProvideTextStyle(value = textStyle) {
+            dateContent()
+        }
         Spacer(modifier = Modifier.weight(1F))
         IconButton(
             onClick = {

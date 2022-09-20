@@ -5,6 +5,7 @@ import com.rtamayo.compose_material3_pickers.date.models.Month as ModelMonth
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year
+import java.time.temporal.ChronoUnit
 
 object DateMapper {
 
@@ -50,10 +51,10 @@ object DateMapper {
         }
 
         val isLeap = Year.isLeap(month.year.toLong())
-        val monthLength = month.monthName.length(isLeap)
+        val monthLength = month.month.length(isLeap)
         if(monthLength - days.size > 1) {
             for (i in days.size until monthLength) {
-                days.add(Day(LocalDate.of(month.year, month.monthName.value, i + 1)))
+                days.add(Day(LocalDate.of(month.year, month.month.value, i + 1)))
             }
             month.days = days
             monthList.add(month)
@@ -86,7 +87,7 @@ object DateMapper {
             monthList.reversed()
         }
         for (m in list) {
-            if(m.monthName == month.monthName && m.year == year) {
+            if(m.month == month.month && m.year == year) {
                 selectedMonth = m
                 break
             }
@@ -107,5 +108,22 @@ object DateMapper {
         }
 
         return 0
+    }
+
+    fun getCalendarListIndex(monthList: List<ModelMonth>, date: LocalDate): Int {
+        var dayOfWeekOffset = 0
+        var currentMonth: LocalDate
+        for (month in monthList) {
+            currentMonth = LocalDate.of(month.year, month.month, 1)
+            if (currentMonth.isBefore(date)) {
+                dayOfWeekOffset += month.firstDayOfTheWeek.value
+            } else {
+                break
+            }
+        }
+        val initialDate = LocalDate.of(monthList.first().year, monthList.first().month, 1)
+        val daysBetween = ChronoUnit.DAYS.between(initialDate, date) - date.dayOfMonth
+        val monthsBetween = ChronoUnit.MONTHS.between(initialDate, date) - 1
+        return (daysBetween.toInt() + monthsBetween.toInt() + dayOfWeekOffset) - date.dayOfWeek.value
     }
 }
