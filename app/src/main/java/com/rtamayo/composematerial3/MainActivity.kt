@@ -21,9 +21,8 @@ import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.rtamayo.compose_material3_pickers.date.DatePicker
 import com.rtamayo.compose_material3_pickers.date.DateRangePicker
-import com.rtamayo.compose_material3_pickers.date.TestDateRangePicker
-import com.rtamayo.compose_material3_pickers.timepicker.TimePicker
 import com.rtamayo.composematerial3.ui.theme.ComposeMaterial3Theme
 import java.time.LocalDate
 import kotlin.math.max
@@ -35,6 +34,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeMaterial3Theme {
                 var date by remember { mutableStateOf(LocalDate.now()) }
+                var endD by remember {
+                    mutableStateOf(LocalDate.now().plusDays(5))
+                }
                 var showDialog by remember { mutableStateOf(false) }
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -66,13 +68,18 @@ class MainActivity : ComponentActivity() {
                             showDialog = false
                         }
                     )
-                     */
-                    TestDateRangePicker(
-                        startDate = LocalDate.now(),
-                        onDateSelected = {}
-                    ) {
-                        
-                    }
+                    */
+                    DateRangePicker(
+                        startDate = date,
+                        endDate = endD,
+                        onDateSelected = { startDate, endDate ->
+                            date = startDate
+                            endD = endDate
+                        },
+                        onDismissRequest = {
+                            showDialog = false
+                        }
+                    )
                 }
 
             }

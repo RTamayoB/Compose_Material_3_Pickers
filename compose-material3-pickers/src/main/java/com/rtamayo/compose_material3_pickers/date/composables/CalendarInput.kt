@@ -17,8 +17,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.rtamayo.compose_material3_pickers.date.models.Month
 import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
 import com.rtamayo.compose_material3_pickers.date.utils.DateMapper
-import com.rtamayo.compose_material3_pickers.datepicker.components.Calendar
-import com.rtamayo.compose_material3_pickers.datepicker.components.CalendarList
+import com.rtamayo.compose_material3_pickers.date.utils.DateMapper.getPage
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -33,13 +32,11 @@ fun CalendarInput(
         var showYearSelector by remember { mutableStateOf(false) }
         val pagerState = rememberPagerState()
         val scope = rememberCoroutineScope()
+        var currentPage by remember { mutableStateOf(0) }
 
-        var currentPage by remember {
-            mutableStateOf(0)
-        }
         LaunchedEffect(key1 = true) {
             scope.launch {
-                currentPage = DateMapper.getPage(monthList, date)
+                currentPage = getPage(monthList, date)
                 pagerState.scrollToPage(currentPage)
             }
         }
@@ -79,13 +76,31 @@ fun CalendarInput(
                 }
             )
         } else {
-            Calendar(
+            CalendarPager(
                 date,
                 monthList,
                 pagerState,
                 onDateChanged = onDateChanged
             )
         }
+    }
+}
+
+@Composable
+fun CalendarRangeInput(
+    startDate: LocalDate,
+    endDate: LocalDate,
+    monthList: List<Month>,
+    onDateChanged: (startDate: LocalDate, endDate: LocalDate) -> Unit,
+) {
+    Column {
+        WeekLabels()
+        CalendarList(
+            startDate = startDate,
+            endDate = endDate,
+            monthList = monthList,
+            onDateChanged = onDateChanged
+        )
     }
 }
 
@@ -131,23 +146,5 @@ internal fun CalendarTopBar(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun CalendarRangeInput(
-    startDate: LocalDate,
-    endDate: LocalDate,
-    monthList: List<Month>,
-    onDateChanged: (startDate: LocalDate, endDate: LocalDate) -> Unit,
-) {
-    Column {
-        WeekLabels()
-        CalendarList(
-            startDate = startDate,
-            endDate = endDate,
-            monthList = monthList,
-            onDateChanged = onDateChanged
-        )
     }
 }

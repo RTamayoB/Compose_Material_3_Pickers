@@ -1,10 +1,7 @@
 package com.rtamayo.compose_material3_pickers.date.composables
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -24,13 +21,14 @@ internal fun WeekLabels() {
 
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         items(
             items = weekLabels
         ) {
             Box(
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(49.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(

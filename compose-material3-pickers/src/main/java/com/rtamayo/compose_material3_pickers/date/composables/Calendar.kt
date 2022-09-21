@@ -1,32 +1,27 @@
-package com.rtamayo.compose_material3_pickers.datepicker.components
+package com.rtamayo.compose_material3_pickers.date.composables
 
 import android.util.Log
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.rtamayo.compose_material3_pickers.date.models.Month
 import java.time.LocalDate
-import com.rtamayo.compose_material3_pickers.date.composables.WeekLabels
 import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
 import com.rtamayo.compose_material3_pickers.date.utils.DateMapper.getCalendarListIndex
 import kotlinx.coroutines.launch
-import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-internal fun Calendar(
+internal fun CalendarPager(
     date: LocalDate,
     monthList: List<Month>,
     pagerState: PagerState,
@@ -70,6 +65,11 @@ fun CalendarList(
     val scope = rememberCoroutineScope()
     var selectedItemIndex = 0
 
+    var start by remember { mutableStateOf(startDate) }
+    var end by remember { mutableStateOf(endDate) }
+    var startClicked by remember { mutableStateOf(false) }
+    var endClicked by remember { mutableStateOf(false) }
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
         modifier = Modifier
@@ -104,7 +104,21 @@ fun CalendarList(
                 Day(
                     day = day,
                     onDateSelected = {
-                        onDateChanged(it, it.plusDays(5))
+                        if (!startClicked) {
+                            start = it
+                            startClicked = true
+                        }
+                        else {
+                            end = it
+                            endClicked = true
+                        }
+                        if (startClicked && endClicked) {
+                            startClicked = false
+                            endClicked = false
+
+                        }
+                        Log.d("Selected", it.toString())
+                        onDateChanged(start, end)
                     }
                 )
             }
@@ -135,29 +149,6 @@ internal fun CalendarGrid(
             Box(modifier = Modifier)
         }
         items(month.days) { day ->
-            Day(
-                day = day,
-                onDateSelected = onDateChanged
-            )
-        }
-    }
-}
-
-@Composable
-internal fun CalendarRow(
-    month: Month,
-    onDateChanged: (LocalDate) -> Unit,
-) {
-    val dayOfWeek = month.firstDayOfTheWeek.value
-    FlowRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-    ) {
-        for (i in 0 until dayOfWeek) {
-            Box(modifier = Modifier.border(1.dp, Color.Blue))
-        }
-        for (day in month.days) {
             Day(
                 day = day,
                 onDateSelected = onDateChanged

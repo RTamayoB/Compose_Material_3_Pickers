@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.datepicker.components
+package com.rtamayo.compose_material3_pickers.date.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
