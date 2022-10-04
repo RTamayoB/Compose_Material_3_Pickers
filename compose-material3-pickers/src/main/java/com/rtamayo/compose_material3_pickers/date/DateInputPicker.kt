@@ -1,6 +1,5 @@
 package com.rtamayo.compose_material3_pickers.date
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -11,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
+import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.formatDate
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -28,7 +27,6 @@ fun DateInputPicker(
     format: String = "dd/MM/yy",
 ) {
     val locale = LocalContext.current.resources.configuration.locales
-    Log.d("Locale", locale.toString())
     val formatter = DateTimeFormatter.ofPattern(format, locale[0])
     var dateFormatted by remember { mutableStateOf(date.format(formatter)) }
     var invalidFormat by remember { mutableStateOf(false) }
@@ -81,7 +79,7 @@ fun DateInputPicker(
                 ErrorText(value = "Example: ${LocalDate.now().format(formatter)}")
             }
             if (outOfRange) {
-                ErrorText(value = "Out of range: ${format(newDate, "dd MMM yyy")}")
+                ErrorText(value = "Out of range: ${formatDate(newDate, "dd MMM yyy")}")
             }
         }
     }

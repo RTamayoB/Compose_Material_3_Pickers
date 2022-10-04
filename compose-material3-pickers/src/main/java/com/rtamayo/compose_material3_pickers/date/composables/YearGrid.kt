@@ -9,24 +9,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.models.Month
-import com.rtamayo.compose_material3_pickers.date.utils.DateMapper
+import com.rtamayo.compose_material3_pickers.date.utils.DatePickerState
+import java.time.YearMonth
 
 @Composable
 fun YearGrid(
+    datePickerState: DatePickerState,
     month: Month,
-    monthList: List<Month>,
-    onYearSelected: (month: Month, year: Int) -> Unit
+    onYearSelected: (yearMonth: YearMonth) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier.padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        //TODO: Get list of Years
-        val yearList = DateMapper.getYearList(monthList)
-        items(yearList) { year ->
+        items(datePickerState.yearList) { year ->
             Year(
-                month,
+                month = month,
                 year = year,
                 onYearSelected = onYearSelected
             )

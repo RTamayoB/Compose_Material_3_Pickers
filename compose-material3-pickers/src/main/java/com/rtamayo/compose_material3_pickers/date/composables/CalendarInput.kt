@@ -15,71 +15,60 @@ import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.rtamayo.compose_material3_pickers.date.models.Month
-import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.format
-import com.rtamayo.compose_material3_pickers.date.utils.DateMapper
-import com.rtamayo.compose_material3_pickers.date.utils.DateMapper.getPage
+import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.formatYearMonth
+import com.rtamayo.compose_material3_pickers.date.utils.DatePickerState
+import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerState
+import com.rtamayo.compose_material3_pickers.date.utils.DateUtil
+import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.getPage
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CalendarInput(
-    date: LocalDate,
-    monthList: List<Month>,
+    datePickerState: DatePickerState,
     onDateChanged: (LocalDate) -> Unit,
 ) {
     Column {
-        var showYearSelector by remember { mutableStateOf(false) }
-        val pagerState = rememberPagerState()
         val scope = rememberCoroutineScope()
-        var currentPage by remember { mutableStateOf(0) }
 
-        LaunchedEffect(key1 = true) {
+        LaunchedEffect(true) {
             scope.launch {
-                currentPage = getPage(monthList, date)
-                pagerState.scrollToPage(currentPage)
+                datePickerState.goToCurrentMonth()
             }
         }
-        val currentMonth = monthList[pagerState.currentPage]
+
+        val currentMonth = datePickerState.monthList[datePickerState.pagerState.currentPage]
         CalendarTopBar(
-            showYearSelector = showYearSelector,
+            showYearSelector = datePickerState.showYearSelector,
             month = currentMonth,
             onYearClick = {
-                showYearSelector = !showYearSelector
+                datePickerState.toggleYearSelector()
             },
             onPreviousMonth = {
                 scope.launch {
-                    if (currentPage > 0) currentPage -= 1
-                    pagerState.scrollToPage(currentPage)
+                    datePickerState.previousMonth()
                 }
             },
             onNextMonth = {
                 scope.launch {
-                    if(currentPage < monthList.size) currentPage += 1
-                    pagerState.scrollToPage(currentPage)
+                    datePickerState.nextMonth()
                 }
             }
         )
-        if (showYearSelector) {
+        if (datePickerState.showYearSelector) {
             YearGrid(
-                month = monthList[pagerState.currentPage],
-                monthList = monthList,
-                // TODO: Make this jump user to same month but of selected year or in default the closest month
-                onYearSelected = { month, year ->
-                    showYearSelector = false
-                    val currentYear = monthList[pagerState.currentPage].year
-                    val selectedMonth = DateMapper.getMonth(monthList, currentYear, month, year)
-                    currentPage = monthList.indexOf(selectedMonth)
+                datePickerState = datePickerState,
+                month = currentMonth,
+                onYearSelected = { yearMonth ->
                     scope.launch {
-                        pagerState.scrollToPage(currentPage)
+                        datePickerState.goToMonth(yearMonth)
                     }
                 }
             )
         } else {
             CalendarPager(
-                date,
-                monthList,
-                pagerState,
+                datePickerState = datePickerState,
                 onDateChanged = onDateChanged
             )
         }
@@ -91,7 +80,8 @@ fun CalendarRangeInput(
     startDate: LocalDate,
     endDate: LocalDate,
     monthList: List<Month>,
-    onDateChanged: (startDate: LocalDate, endDate: LocalDate) -> Unit,
+    onDateChanged: (startDate: LocalDate) -> Unit,
+    dateRangePickerState: DateRangePickerState
 ) {
     Column {
         WeekLabels()
@@ -99,7 +89,8 @@ fun CalendarRangeInput(
             startDate = startDate,
             endDate = endDate,
             monthList = monthList,
-            onDateChanged = onDateChanged
+            onDateChanged = onDateChanged,
+            dateRangePickerState = dateRangePickerState
         )
     }
 }
@@ -119,8 +110,7 @@ internal fun CalendarTopBar(
         AssistChip(
             onClick = onYearClick,
             label = {
-                val date = LocalDate.of(month.year, month.month, 1)
-                Text(text = format(date, "MMMM yyyy"))
+                Text(text = formatYearMonth(month.yearMonth, "MMMM yyyy"))
             },
             trailingIcon = {
                 Icon(
@@ -129,7 +119,7 @@ internal fun CalendarTopBar(
                 )
             },
             shape = CircleShape,
-            border = null
+            border = null,
         )
         Spacer(modifier = Modifier.weight(1F))
         if (!showYearSelector) {

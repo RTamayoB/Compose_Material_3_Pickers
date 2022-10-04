@@ -7,8 +7,10 @@ import com.rtamayo.compose_material3_pickers.date.models.Month as ModelMonth
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
+import kotlin.math.abs
+import kotlin.math.ceil
 
-object DateMapper {
+object DateUtil {
 
     /*
     val yearMin = (100.0 * floor(abs(startDate.year / 100.0))).toInt()
@@ -121,4 +123,10 @@ object DateMapper {
         val monthsBetween = ChronoUnit.MONTHS.between(initialDate, date) - 1
         return (daysBetween.toInt() + monthsBetween.toInt() + dayOfWeekOffset) - date.dayOfWeek.value
     }
+
+    private val yearMax = (100.0 * ceil(abs(LocalDate.now().year / 100.0))).toInt()
+
+    //Use Ceil/Floor functions to return minus 100 years and plus 100 years
+    val MIN_DATE: LocalDate = LocalDate.now()
+    val MAX_DATE: LocalDate = LocalDate.now().withYear(yearMax).withDayOfYear(LocalDate.now().lengthOfYear())
 }

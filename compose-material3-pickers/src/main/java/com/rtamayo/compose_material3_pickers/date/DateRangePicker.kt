@@ -6,17 +6,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.PickerDialog
+import com.rtamayo.compose_material3_pickers.R
 import com.rtamayo.compose_material3_pickers.date.composables.CalendarRangeInput
 import com.rtamayo.compose_material3_pickers.date.composables.InputSelector
-import com.rtamayo.compose_material3_pickers.date.utils.DateMapper
+import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerState
+import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MAX_DATE
+import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MIN_DATE
+import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.getMonthList
+import com.rtamayo.compose_material3_pickers.date.utils.rememberDateRangePickerState
 import java.time.LocalDate
 
 @Composable
 fun DateRangePicker(
-    startDate: LocalDate,
-    endDate: LocalDate,
+    startDate: LocalDate = LocalDate.now(),
+    endDate: LocalDate = LocalDate.now(),
     minDate: LocalDate = MIN_DATE,
     maxDate: LocalDate = MAX_DATE,
     onDateSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit,
@@ -25,15 +31,15 @@ fun DateRangePicker(
 
     var currentStartDate by remember { mutableStateOf(startDate) }
     var currentEndDate by remember { mutableStateOf(endDate) }
+    var showCalendar by remember { mutableStateOf(true) }
 
-    var showCalendar by remember {
-        mutableStateOf(true)
-    }
+    val dateRangePickerState = rememberDateRangePickerState(minDate, maxDate)
+
     PickerDialog(
         onDismissRequest = onDismissRequest,
         title = {
             Text(
-                text = "Select Date",
+                text = stringResource(id = R.string.select_date),
             )
         },
         confirmButton = {
@@ -42,14 +48,14 @@ fun DateRangePicker(
                     onDateSelected(currentStartDate, currentEndDate)
                 }
             ) {
-                Text(text = "Ok")
+                Text(text = stringResource(id = R.string.ok))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text(text = "Cancel")
+                Text(text = stringResource(id = R.string.cancel))
             }
         },
         topConfirmButton = {
@@ -58,30 +64,30 @@ fun DateRangePicker(
                     onDateSelected(currentStartDate, currentEndDate)
                 }
             ) {
-                Text(text = "Ok")
+                Text(text = stringResource(id = R.string.cancel))
             }
         },
         topDismissButton = {
             IconButton(onClick = onDismissRequest) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close"
+                    contentDescription = stringResource(id = R.string.cancel)
                 )
             }
         },
         content = {
             DateRangePickerContent(
-                startDate = startDate,
-                endDate = startDate,
+                startDate = currentStartDate,
+                endDate = currentEndDate,
                 minDate = minDate,
                 maxDate = maxDate,
-                onDateChanged = { startDate, endDate ->
-                    currentStartDate = startDate
-                    currentEndDate = endDate
+                onDateChanged = {
+                    dateRangePickerState.setSelectedDay(it)
                 },
                 onInputChange = {
                     showCalendar = it
-                }
+                },
+                dateRangePickerState = dateRangePickerState
             )
         },
         isFullScreen = showCalendar
@@ -94,19 +100,20 @@ private fun DateRangePickerContent(
     endDate: LocalDate,
     minDate: LocalDate,
     maxDate: LocalDate,
-    onDateChanged: (startDate: LocalDate, endDate: LocalDate) -> Unit,
-    onInputChange: (Boolean) -> Unit
+    onDateChanged: (startDate: LocalDate) -> Unit,
+    onInputChange: (Boolean) -> Unit,
+    dateRangePickerState: DateRangePickerState,
 ) {
     var showCalendar by remember { mutableStateOf(true) }
 
-    val monthList = DateMapper.getMonthList(minDate, maxDate)
+    val monthList = getMonthList(minDate, maxDate)
 
     Column {
         InputSelector(
             startDate = startDate,
             endDate = endDate,
-        ) { isShowingCalendar ->
-            showCalendar = isShowingCalendar
+        ) {
+            showCalendar
             onInputChange(showCalendar)
         }
         if (showCalendar) {
@@ -114,7 +121,8 @@ private fun DateRangePickerContent(
                 startDate = startDate,
                 endDate = endDate,
                 monthList = monthList,
-                onDateChanged = onDateChanged
+                onDateChanged = onDateChanged,
+                dateRangePickerState = dateRangePickerState
             )
         }
         else {

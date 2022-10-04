@@ -13,19 +13,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.models.Month
+import java.time.YearMonth
 
 //TODO Fix selected padding
 @Composable
 internal fun Year(
     month: Month,
     year: Int,
-    onYearSelected:(month: Month, year: Int) -> Unit,
+    onYearSelected:(yearMonth: YearMonth) -> Unit,
 ) {
     var yearModifier = Modifier
         .size(72.dp, 36.dp)
         .clip(CircleShape)
 
-    if(month.year == year) {
+    if(month.yearMonth.year == year) {
         yearModifier = yearModifier
             .background(Color.Blue)
     }
@@ -34,13 +35,13 @@ internal fun Year(
         contentAlignment = Alignment.Center
     ) {
         TextButton(
-            onClick = { onYearSelected(month, year) },
+            onClick = { onYearSelected(YearMonth.of(year, month.yearMonth.month)) },
             modifier = yearModifier
         ) {
             Text(
                 text = year.toString(),
                 textAlign = TextAlign.Center,
-                color = if (month.year == year) Color.White else Color.Black
+                color = if (month.yearMonth.year == year) Color.White else Color.Black
             )
         }
     }

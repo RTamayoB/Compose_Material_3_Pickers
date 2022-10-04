@@ -2,7 +2,6 @@ package com.rtamayo.compose_material3_pickers
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.material3.AlertDialogDefaults.titleContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -10,16 +9,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
-//TODO Change buttons to: confirmButton, dismissButton,
-// neutralButton (opt), topConfirmButton (opt) and topDismissButton (opt)
-// then, just show the top bar if any top button is shown and shape is Rectangle Shape
-// Note: Already implemented, improve this
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun PickerDialog(

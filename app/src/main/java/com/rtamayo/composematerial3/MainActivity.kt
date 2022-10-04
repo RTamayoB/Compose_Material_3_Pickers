@@ -34,54 +34,70 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeMaterial3Theme {
                 var date by remember { mutableStateOf(LocalDate.now()) }
-                var endD by remember {
-                    mutableStateOf(LocalDate.now().plusDays(5))
-                }
-                var showDialog by remember { mutableStateOf(false) }
+                var startDate by remember { mutableStateOf(LocalDate.now()) }
+                var endDate by remember { mutableStateOf(LocalDate.now().plusDays(5)) }
+                var showDatePicker by remember { mutableStateOf(false) }
+                var showDateRangePicker by remember { mutableStateOf(false) }
+
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceEvenly
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Text(text = date.toString())
-                        Button(onClick = {
-                            showDialog = true
-                        }) {
-                            Text(text = "Get Date")
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Text(text = date.toString())
+                            Button(onClick = {
+                                showDatePicker = true
+                            }) {
+                                Text(text = "Get Date")
+                            }
+                        }
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Text(text = "$startDate - $endDate")
+                            Button(onClick = {
+                                showDateRangePicker = true
+                            }) {
+                                Text(text = "Get Date Range")
+                            }
                         }
                     }
                 }
-                if (showDialog) {
-                    /*
+                if (showDatePicker) {
                     DatePicker(
                         startDate = date,
-                        minDate = LocalDate.now(),
-                        maxDate = LocalDate.now().plusYears(50),
                         onDateSelected = {
-                            showDialog = false
+                            showDatePicker = false
                             date = it
                         },
                         onDismissRequest = {
-                            showDialog = false
-                        }
-                    )
-                    */
-                    DateRangePicker(
-                        startDate = date,
-                        endDate = endD,
-                        onDateSelected = { startDate, endDate ->
-                            date = startDate
-                            endD = endDate
-                        },
-                        onDismissRequest = {
-                            showDialog = false
+                            showDatePicker = false
                         }
                     )
                 }
-
+                if(showDateRangePicker) {
+                    DateRangePicker(
+                        startDate = startDate,
+                        endDate = endDate,
+                        onDateSelected = { start, end ->
+                            startDate = start
+                            endDate = end
+                            showDateRangePicker = false
+                        },
+                        onDismissRequest = {
+                            showDateRangePicker = false
+                        }
+                    )
+                }
             }
         }
     }
