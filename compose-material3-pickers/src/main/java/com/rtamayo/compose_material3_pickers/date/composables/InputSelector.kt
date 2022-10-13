@@ -11,9 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.R
+import com.rtamayo.compose_material3_pickers.date.simple.DatePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.formatDate
-import com.rtamayo.compose_material3_pickers.date.utils.DatePickerState
-import com.rtamayo.compose_material3_pickers.date.utils.rememberDatePickerState
 import java.time.LocalDate
 
 @Composable

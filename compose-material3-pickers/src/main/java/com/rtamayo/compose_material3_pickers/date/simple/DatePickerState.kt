@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.date.utils
+package com.rtamayo.compose_material3_pickers.date.simple
 
 import androidx.compose.runtime.*
 import com.google.accompanist.pager.ExperimentalPagerApi

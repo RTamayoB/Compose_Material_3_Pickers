@@ -13,13 +13,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 import com.rtamayo.compose_material3_pickers.date.models.Month
+import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.formatYearMonth
-import com.rtamayo.compose_material3_pickers.date.utils.DatePickerState
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerState
-import com.rtamayo.compose_material3_pickers.date.utils.DateUtil
-import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.getPage
+import com.rtamayo.compose_material3_pickers.date.simple.DatePickerState
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 

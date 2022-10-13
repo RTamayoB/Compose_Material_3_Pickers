@@ -19,10 +19,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.rtamayo.compose_material3_pickers.date.models.Month
+import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
+import com.rtamayo.compose_material3_pickers.date.simple.DatePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.formatDate
-import com.rtamayo.compose_material3_pickers.date.utils.DatePickerState
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerState
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerUiState
 import java.time.LocalDate
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.getCalendarListIndex
 import kotlinx.coroutines.launch
@@ -79,11 +78,6 @@ fun CalendarList(
     val scope = rememberCoroutineScope()
     var selectedItemIndex = 0
 
-    var start by remember { mutableStateOf(startDate) }
-    var end by remember { mutableStateOf(endDate) }
-    var startClicked by remember { mutableStateOf(false) }
-    var endClicked by remember { mutableStateOf(false) }
-
     val dateRangePickerUiState = dateRangePickerState.dateRangePickerUiState.value
     val numberSelectedDays = dateRangePickerUiState.numberSelectedDays.toInt()
 
@@ -137,10 +131,8 @@ fun CalendarList(
                 }
                 Week(
                     week,
-                    startDate,
-                    endDate,
                     onDateChanged = onDateChanged,
-                    dateRangePickerUiState
+                    dateRangePickerState
                 )
             }
         }

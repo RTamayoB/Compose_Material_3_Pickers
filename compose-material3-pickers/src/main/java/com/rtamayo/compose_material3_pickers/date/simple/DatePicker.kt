@@ -12,12 +12,11 @@ import com.rtamayo.compose_material3_pickers.PickerDialog
 import com.rtamayo.compose_material3_pickers.R
 import com.rtamayo.compose_material3_pickers.date.composables.CalendarInput
 import com.rtamayo.compose_material3_pickers.date.composables.InputSelector
-import com.rtamayo.compose_material3_pickers.date.models.Month
-import com.rtamayo.compose_material3_pickers.date.utils.DatePickerState
+import com.rtamayo.compose_material3_pickers.date.simple.DateInputPicker
+import com.rtamayo.compose_material3_pickers.date.simple.DatePickerState
+import com.rtamayo.compose_material3_pickers.date.simple.rememberDatePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MAX_DATE
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MIN_DATE
-import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.getMonthList
-import com.rtamayo.compose_material3_pickers.date.utils.rememberDatePickerState
 import java.time.LocalDate
 
 @OptIn(ExperimentalPagerApi::class)

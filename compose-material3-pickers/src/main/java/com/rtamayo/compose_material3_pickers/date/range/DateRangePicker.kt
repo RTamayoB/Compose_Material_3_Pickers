@@ -1,5 +1,6 @@
 package com.rtamayo.compose_material3_pickers.date
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,11 +13,11 @@ import com.rtamayo.compose_material3_pickers.PickerDialog
 import com.rtamayo.compose_material3_pickers.R
 import com.rtamayo.compose_material3_pickers.date.composables.CalendarRangeInput
 import com.rtamayo.compose_material3_pickers.date.composables.InputSelector
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerState
+import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
+import com.rtamayo.compose_material3_pickers.date.range.rememberDateRangePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MAX_DATE
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MIN_DATE
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.getMonthList
-import com.rtamayo.compose_material3_pickers.date.utils.rememberDateRangePickerState
 import java.time.LocalDate
 
 @Composable
@@ -64,7 +65,7 @@ fun DateRangePicker(
                     onDateSelected(currentStartDate, currentEndDate)
                 }
             ) {
-                Text(text = stringResource(id = R.string.cancel))
+                Text(text = stringResource(id = R.string.ok))
             }
         },
         topDismissButton = {
@@ -83,6 +84,15 @@ fun DateRangePicker(
                 maxDate = maxDate,
                 onDateChanged = {
                     dateRangePickerState.setSelectedDay(it)
+                    val uiState = dateRangePickerState.dateRangePickerUiState
+                    uiState.value.selectedStartDate?.let { newStartDate ->
+                        currentStartDate = newStartDate
+                        Log.d("Date", startDate.toString())
+                    }
+                    uiState.value.selectedEndDate?.let { newEndDate ->
+                        currentEndDate = newEndDate
+                        Log.d("Date", endDate.toString())
+                    }
                 },
                 onInputChange = {
                     showCalendar = it

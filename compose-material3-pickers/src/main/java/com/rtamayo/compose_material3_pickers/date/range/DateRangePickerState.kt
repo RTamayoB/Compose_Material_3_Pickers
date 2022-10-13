@@ -1,10 +1,12 @@
-package com.rtamayo.compose_material3_pickers.date.utils
+package com.rtamayo.compose_material3_pickers.date.range
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.rtamayo.compose_material3_pickers.date.models.Month
 import com.rtamayo.compose_material3_pickers.date.models.Week
+import com.rtamayo.compose_material3_pickers.date.utils.AnimationDirection
+import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerUiState
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MAX_DATE
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MIN_DATE
 import java.time.LocalDate

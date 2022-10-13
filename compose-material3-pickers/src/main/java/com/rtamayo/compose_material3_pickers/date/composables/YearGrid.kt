@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.models.Month
-import com.rtamayo.compose_material3_pickers.date.utils.DatePickerState
+import com.rtamayo.compose_material3_pickers.date.simple.DatePickerState
 import java.time.YearMonth
 
 @Composable

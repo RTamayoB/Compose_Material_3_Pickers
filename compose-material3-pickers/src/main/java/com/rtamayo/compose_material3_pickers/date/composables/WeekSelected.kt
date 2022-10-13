@@ -1,9 +1,7 @@
 package com.rtamayo.compose_material3_pickers.date.composables
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -15,12 +13,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.models.Week
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerState
+import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerUiState
-import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.temporal.ChronoUnit
 
 @Composable
 fun WeekSelected(
@@ -33,7 +28,7 @@ fun WeekSelected(
     pillColor: Color = androidx.compose.material.MaterialTheme.colors.secondary
 ) {
     val widthPerDayPx = with(LocalDensity.current) { widthPerDay.toPx() }
-    val cornerRadiusPx = with(LocalDensity.current) { 24.dp.toPx() }
+    val cornerRadiusPx = with(LocalDensity.current) { 50.dp.toPx() }
 
     Canvas(
         modifier = modifier.fillMaxWidth(),
@@ -54,7 +49,7 @@ fun WeekSelected(
                 drawRoundRect(
                     color = pillColor,
                     topLeft = offset,
-                    size = Size(size, widthPerDayPx),
+                    size = Size(size, 35.dp.toPx()),
                     cornerRadius = CornerRadius(cornerRadiusPx)
                 )
             }
@@ -115,14 +110,16 @@ private fun getOffsetAndSize(
         totalSize = totalSize.coerceAtLeast(widthPerDayPx)
     }
 
+    totalSize -= 50F
+
     val startOffset =
         state.selectedStartOffset(currentWeekStart, week.yearMonth) * widthPerDayPx
 
     val offset =
         if (state.animateDirection?.isBackwards() == true) {
-            Offset(startOffset + edgePadding + rightSize, 0f)
+            Offset((startOffset + edgePadding + rightSize) - 19F, 18f)
         } else {
-            Offset(startOffset + edgePadding - leftSize, 0f)
+            Offset((startOffset + edgePadding - leftSize) + 19F, 18f)
         }
 
     return offset to totalSize

@@ -70,36 +70,3 @@ internal fun Day(
         }
     }
 }
-
-@Composable
-internal fun Day(
-    day: LocalDate,
-    dateRangePickerUiState: DateRangePickerUiState,
-    onDayClicked: (LocalDate) -> Unit,
-    month: YearMonth,
-    modifier: Modifier = Modifier
-) {
-
-    var dayModifier = Modifier
-        .clip(CircleShape)
-        .size(36.dp)
-        .aspectRatio(1F)
-
-
-    IconButton(
-        onClick = {
-            onDayClicked(day)
-        },
-    ) {
-        Box(
-            modifier = dayModifier,
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = day.dayOfMonth.toString(),
-                textAlign = TextAlign.Center,
-                color = Color.White
-            )
-        }
-    }
-}
