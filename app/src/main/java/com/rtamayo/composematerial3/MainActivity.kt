@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.DatePicker
 import com.rtamayo.compose_material3_pickers.date.DateRangePicker
+import com.rtamayo.compose_material3_pickers.time.TimePicker
 import com.rtamayo.composematerial3.ui.theme.ComposeMaterial3Theme
 import java.time.LocalDate
 import kotlin.math.max
@@ -38,15 +39,16 @@ class MainActivity : ComponentActivity() {
                 var endDate by remember { mutableStateOf(LocalDate.now().plusDays(5)) }
                 var showDatePicker by remember { mutableStateOf(false) }
                 var showDateRangePicker by remember { mutableStateOf(false) }
+                var showTimePicker by remember { mutableStateOf(false) }
 
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Row(
+                    Column(
                         modifier = Modifier.fillMaxSize(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,6 +70,16 @@ class MainActivity : ComponentActivity() {
                                 showDateRangePicker = true
                             }) {
                                 Text(text = "Get Date Range")
+                            }
+                        }
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Button(onClick = {
+                                showTimePicker = true
+                            }) {
+                                Text(text = "Get Time")
                             }
                         }
                     }
@@ -95,6 +107,16 @@ class MainActivity : ComponentActivity() {
                         },
                         onDismissRequest = {
                             showDateRangePicker = false
+                        }
+                    )
+                }
+                if (showTimePicker) {
+                    TimePicker(
+                        onTimeSelected = {
+                            showTimePicker = false
+                        },
+                        onDismissRequest = {
+                            showTimePicker = false
                         }
                     )
                 }
