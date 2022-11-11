@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.date.utils
+package com.rtamayo.compose_material3_pickers.date
 
 import com.rtamayo.compose_material3_pickers.date.models.Week
 import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
@@ -46,7 +46,7 @@ data class DateRangePickerUiState(
         return !end.isBefore(selectedStartDate) && !start.isAfter(selectedEndDate)
     }
 
-    fun isDateInSelectedPeriod(date: LocalDate): Boolean {
+    private fun isDateInSelectedPeriod(date: LocalDate): Boolean {
         if (selectedStartDate == null) return false
         if (selectedStartDate == date) return true
         if (selectedEndDate == null) return false

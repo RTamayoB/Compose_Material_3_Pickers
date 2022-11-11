@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.date
+package com.rtamayo.compose_material3_pickers.date.simple
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.models.Week
 import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerUiState
+import com.rtamayo.compose_material3_pickers.date.DateRangePickerUiState
 import java.time.LocalDate
 
 @Composable

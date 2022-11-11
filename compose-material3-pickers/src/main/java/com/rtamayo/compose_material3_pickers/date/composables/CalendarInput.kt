@@ -75,7 +75,6 @@ fun CalendarInput(
 @Composable
 fun CalendarRangeInput(
     startDate: LocalDate,
-    endDate: LocalDate,
     monthList: List<Month>,
     onDateChanged: (startDate: LocalDate) -> Unit,
     dateRangePickerState: DateRangePickerState
@@ -84,7 +83,6 @@ fun CalendarRangeInput(
         WeekLabels()
         CalendarList(
             startDate = startDate,
-            endDate = endDate,
             monthList = monthList,
             onDateChanged = onDateChanged,
             dateRangePickerState = dateRangePickerState

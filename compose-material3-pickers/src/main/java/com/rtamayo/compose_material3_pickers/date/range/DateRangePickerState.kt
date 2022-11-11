@@ -1,12 +1,11 @@
 package com.rtamayo.compose_material3_pickers.date.range
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import com.rtamayo.compose_material3_pickers.date.AnimationDirection
+import com.rtamayo.compose_material3_pickers.date.DateRangePickerUiState
 import com.rtamayo.compose_material3_pickers.date.models.Month
 import com.rtamayo.compose_material3_pickers.date.models.Week
-import com.rtamayo.compose_material3_pickers.date.utils.AnimationDirection
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerUiState
+import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MAX_DATE
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MIN_DATE
 import java.time.LocalDate
@@ -22,12 +21,36 @@ class DateRangePickerState(
     private val CALENDAR_STARTS_ON = WeekFields.ISO
 
     val dateRangePickerUiState = mutableStateOf(DateRangePickerUiState())
-    val listMonths: List<Month>
+    private val listMonths: List<Month>
+
+    var selectedStartDate: LocalDate by mutableStateOf(minDate)
+        private set
+
+    var selectedEndDate: LocalDate by mutableStateOf(maxDate)
+        private set
+
+    var showCalendarInput: Boolean by mutableStateOf(true)
+        private set
+
+    val dateFormatted: String
+        @Composable get() = "${DateFormatter.formatDate(selectedStartDate, "MMM dd")} - ${DateFormatter.formatDate(selectedEndDate, "MMM dd")}"
 
     private val periodBetweenCalendarStartEnd: Period = Period.between(
         minDate,
         maxDate
     )
+
+    fun toggleInput() {
+        showCalendarInput = !showCalendarInput
+    }
+
+    fun setStartDate(startDate: LocalDate) {
+        selectedStartDate = startDate
+    }
+
+    fun setEndDate(endDate: LocalDate) {
+        selectedEndDate = endDate
+    }
 
     init {
         val tempListMonths = mutableListOf<Month>()

@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.date
+package com.rtamayo.compose_material3_pickers.date.range
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -13,8 +13,6 @@ import com.rtamayo.compose_material3_pickers.PickerDialog
 import com.rtamayo.compose_material3_pickers.R
 import com.rtamayo.compose_material3_pickers.date.composables.CalendarRangeInput
 import com.rtamayo.compose_material3_pickers.date.composables.InputSelector
-import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
-import com.rtamayo.compose_material3_pickers.date.range.rememberDateRangePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MAX_DATE
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.MIN_DATE
 import com.rtamayo.compose_material3_pickers.date.utils.DateUtil.getMonthList
@@ -32,7 +30,6 @@ fun DateRangePicker(
 
     var currentStartDate by remember { mutableStateOf(startDate) }
     var currentEndDate by remember { mutableStateOf(endDate) }
-    var showCalendar by remember { mutableStateOf(true) }
 
     val dateRangePickerState = rememberDateRangePickerState(minDate, maxDate)
 
@@ -87,20 +84,25 @@ fun DateRangePicker(
                     val uiState = dateRangePickerState.dateRangePickerUiState
                     uiState.value.selectedStartDate?.let { newStartDate ->
                         currentStartDate = newStartDate
+                        dateRangePickerState.setStartDate(newStartDate)
                         Log.d("Date", startDate.toString())
                     }
                     uiState.value.selectedEndDate?.let { newEndDate ->
+                        dateRangePickerState.setEndDate(newEndDate)
                         currentEndDate = newEndDate
                         Log.d("Date", endDate.toString())
                     }
                 },
-                onInputChange = {
-                    showCalendar = it
+                onDateChangedInput = { startDate, endDate ->
+                    currentStartDate = startDate
+                    dateRangePickerState.setStartDate(startDate)
+                    currentEndDate = endDate
+                    dateRangePickerState.setEndDate(endDate)
                 },
                 dateRangePickerState = dateRangePickerState
             )
         },
-        isFullScreen = showCalendar
+        isFullScreen = dateRangePickerState.showCalendarInput
     )
 }
 
@@ -111,25 +113,21 @@ private fun DateRangePickerContent(
     minDate: LocalDate,
     maxDate: LocalDate,
     onDateChanged: (startDate: LocalDate) -> Unit,
-    onInputChange: (Boolean) -> Unit,
+    onDateChangedInput: (startDate: LocalDate, endDate: LocalDate) -> Unit,
     dateRangePickerState: DateRangePickerState,
 ) {
-    var showCalendar by remember { mutableStateOf(true) }
 
     val monthList = getMonthList(minDate, maxDate)
 
     Column {
         InputSelector(
-            startDate = startDate,
-            endDate = endDate,
+            dateRangePickerState = dateRangePickerState
         ) {
-            showCalendar
-            onInputChange(showCalendar)
+            dateRangePickerState.toggleInput()
         }
-        if (showCalendar) {
+        if (dateRangePickerState.showCalendarInput) {
             CalendarRangeInput(
                 startDate = startDate,
-                endDate = endDate,
                 monthList = monthList,
                 onDateChanged = onDateChanged,
                 dateRangePickerState = dateRangePickerState
@@ -141,7 +139,7 @@ private fun DateRangePickerContent(
                 endDate = endDate,
                 minDate = minDate,
                 maxDate = maxDate,
-                onDateChange = onDateChanged,
+                onDateChange = onDateChangedInput,
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
                     .padding(top = 16.dp),

@@ -2,8 +2,6 @@ package com.rtamayo.compose_material3_pickers.date.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import com.rtamayo.compose_material3_pickers.R
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth

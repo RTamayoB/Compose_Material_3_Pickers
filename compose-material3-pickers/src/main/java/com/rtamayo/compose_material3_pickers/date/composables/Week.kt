@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.models.Day
 import com.rtamayo.compose_material3_pickers.date.models.Week
 import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerUiState
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters

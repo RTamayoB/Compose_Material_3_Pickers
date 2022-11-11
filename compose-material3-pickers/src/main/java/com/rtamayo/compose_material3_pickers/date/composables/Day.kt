@@ -12,17 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.*
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.date.models.Day
-import com.rtamayo.compose_material3_pickers.date.utils.DateRangePickerUiState
 import java.time.LocalDate
-import java.time.YearMonth
 
 @Composable
 internal fun Day(

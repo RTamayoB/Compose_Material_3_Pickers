@@ -32,8 +32,8 @@ class DatePickerState(
     var selectedDate: LocalDate by mutableStateOf(date)
         private set
 
-     val dateFormatted: String
-        @Composable get() = formatDate(selectedDate, "dd MMM yyyy")
+    val dateFormatted: String
+    @Composable get() = formatDate(selectedDate, "dd MMM yyyy")
 
     var showCalendarInput: Boolean by mutableStateOf(true)
         private set

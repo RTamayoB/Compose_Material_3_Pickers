@@ -3,10 +3,7 @@ package com.rtamayo.composematerial3
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
@@ -15,19 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.consumeAllChanges
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
-import com.rtamayo.compose_material3_pickers.date.DatePicker
-import com.rtamayo.compose_material3_pickers.date.DateRangePicker
+import com.rtamayo.compose_material3_pickers.date.range.DateRangePicker
+import com.rtamayo.compose_material3_pickers.date.simple.DatePicker
 import com.rtamayo.compose_material3_pickers.time.TimePicker
 import com.rtamayo.composematerial3.ui.theme.ComposeMaterial3Theme
 import java.time.LocalDate
-import kotlin.math.max
-import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,16 +59,6 @@ class MainActivity : ComponentActivity() {
                                 showDateRangePicker = true
                             }) {
                                 Text(text = "Get Date Range")
-                            }
-                        }
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Button(onClick = {
-                                showTimePicker = true
-                            }) {
-                                Text(text = "Get Time")
                             }
                         }
                     }

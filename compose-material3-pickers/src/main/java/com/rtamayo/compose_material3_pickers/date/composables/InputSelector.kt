@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.rtamayo.compose_material3_pickers.R
+import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
 import com.rtamayo.compose_material3_pickers.date.simple.DatePickerState
 import com.rtamayo.compose_material3_pickers.date.utils.DateFormatter.formatDate
 import java.time.LocalDate
@@ -33,12 +34,28 @@ internal fun InputSelector(
 
 @Composable
 internal fun InputSelector(
+    dateRangePickerState: DateRangePickerState,
+    onShowCalendar: () -> Unit
+) {
+    InputSelectorContent(
+        showCalendar = dateRangePickerState.showCalendarInput,
+        dateContent = {
+            Text(
+                text = dateRangePickerState.dateFormatted,
+            )
+        },
+        onShowCalendar = onShowCalendar,
+    )
+}
+
+@Composable
+internal fun InputSelector(
     startDate: LocalDate,
     endDate: LocalDate,
     onShowCalendar: () -> Unit
 ) {
     InputSelectorContent(
-        false,
+        showCalendar = false,
         dateContent = {
             Text(
                 text = "${formatDate(startDate, "MMM dd")} - ${formatDate(endDate, "MMM dd")}",

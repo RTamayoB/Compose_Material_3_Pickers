@@ -34,6 +34,7 @@ fun DateInputPicker(
 
 
     var newDate by remember { mutableStateOf(date) }
+
     Column(
         modifier = modifier
     ) {
@@ -97,5 +98,3 @@ internal fun ErrorText(
         style = Typography().bodySmall
     )
 }
-
-data class InputError(val message: String)

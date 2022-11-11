@@ -17,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.rtamayo.compose_material3_pickers.date.models.Month
 import com.rtamayo.compose_material3_pickers.date.range.DateRangePickerState
 import com.rtamayo.compose_material3_pickers.date.simple.DatePickerState
@@ -69,7 +68,6 @@ internal fun CalendarPager(
 @Composable
 fun CalendarList(
     startDate: LocalDate,
-    endDate: LocalDate,
     monthList: List<Month>,
     onDateChanged: (startDate: LocalDate) -> Unit,
     dateRangePickerState: DateRangePickerState,

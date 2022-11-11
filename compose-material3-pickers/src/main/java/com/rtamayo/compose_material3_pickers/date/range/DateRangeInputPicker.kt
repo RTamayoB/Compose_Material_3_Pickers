@@ -1,4 +1,4 @@
-package com.rtamayo.compose_material3_pickers.date
+package com.rtamayo.compose_material3_pickers.date.range
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -21,7 +21,7 @@ fun DateRangeInputPicker(
     endDate: LocalDate,
     minDate: LocalDate,
     maxDate: LocalDate,
-    onDateChange: (startDate: LocalDate) -> Unit,
+    onDateChange: (startDate: LocalDate, endDate: LocalDate) -> Unit,
     modifier: Modifier = Modifier,
     format: String = "dd/MM/yy",
 ) {
@@ -47,7 +47,7 @@ fun DateRangeInputPicker(
                 startDateFormatted = it
                 try {
                     newStartDate = LocalDate.parse(startDateFormatted, formatter)
-                    onDateChange(newStartDate)
+                    onDateChange(newStartDate, newEndDate)
                     outOfRange = !(newStartDate.isAfter(minDate) && newStartDate.isBefore(maxDate))
                     invalidFormat = false
                 } catch (p: DateTimeParseException) {
@@ -73,7 +73,7 @@ fun DateRangeInputPicker(
                 endDateFormatted = it
                 try {
                     newEndDate = LocalDate.parse(endDateFormatted, formatter)
-                    onDateChange(newStartDate)
+                    onDateChange(newStartDate, newEndDate)
                     outOfRange = !(newEndDate.isAfter(minDate) && newEndDate.isBefore(maxDate))
                     invalidFormat = false
                 } catch (p: DateTimeParseException) {
