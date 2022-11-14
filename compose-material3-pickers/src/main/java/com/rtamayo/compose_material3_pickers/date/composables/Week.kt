@@ -24,9 +24,12 @@ fun Week(
     val dateRangePickerUiState = dateRangePickerState.dateRangePickerUiState
 
     Box {
-        Row(modifier = Modifier
-                .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             for (i in 0..6) {
                 if (currentDay.month == week.yearMonth.month) {
                     val day = Day(currentDay)

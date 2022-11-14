@@ -17,12 +17,12 @@ internal fun WeekLabels() {
 
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
         items(DayOfWeek.values()) { dayOfWeek ->
             Box(
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(40.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(

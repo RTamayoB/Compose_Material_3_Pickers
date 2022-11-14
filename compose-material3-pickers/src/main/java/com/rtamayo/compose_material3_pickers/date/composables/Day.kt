@@ -24,7 +24,7 @@ internal fun Day(
 ) {
     var dayModifier = Modifier
         .clip(CircleShape)
-        .size(36.dp)
+        .size(40.dp)
         .aspectRatio(1F)
 
     if (day.isCurrentDay) {

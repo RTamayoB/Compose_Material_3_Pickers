@@ -152,7 +152,7 @@ internal fun CalendarGrid(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
         columns = GridCells.Fixed(7),
         userScrollEnabled = false
     ) {

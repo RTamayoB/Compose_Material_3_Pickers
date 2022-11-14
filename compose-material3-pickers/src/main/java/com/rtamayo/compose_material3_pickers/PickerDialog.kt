@@ -141,5 +141,5 @@ private val MinWidth = 280.dp
 private val MaxWidth = 560.dp
 private val MaxHeight = 512.dp
 private val DialogPadding = PaddingValues(all = 12.dp)
-private val TitlePadding = PaddingValues( start = 12.dp, bottom = 16.dp)
+private val TitlePadding = PaddingValues( start = 12.dp, bottom = 36.dp)
 private val ButtonsMainAxisSpacing = 8.dp

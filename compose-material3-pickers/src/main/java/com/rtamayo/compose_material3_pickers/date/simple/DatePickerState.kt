@@ -136,7 +136,7 @@ class DatePickerState(
         return lastWeekNumber - firstWeekNumber + 1 // Both weeks inclusive
     }
 
-    fun getMonth(monthList: List<Month>, currentYear: Int, yearMonth: YearMonth): Month {
+    private fun getMonth(monthList: List<Month>, currentYear: Int, yearMonth: YearMonth): Month {
 
         var selectedMonth = monthList.first()
         val list = if (currentYear <= yearMonth.year) {
@@ -155,7 +155,7 @@ class DatePickerState(
         return selectedMonth
     }
 
-    fun getYearList(monthList: List<Month>) : List<Int> {
+    private fun getYearList(monthList: List<Month>) : List<Int> {
         val yearList = mutableListOf<Int>()
         var firstYear = monthList.first().yearMonth.year
         yearList.add(firstYear)

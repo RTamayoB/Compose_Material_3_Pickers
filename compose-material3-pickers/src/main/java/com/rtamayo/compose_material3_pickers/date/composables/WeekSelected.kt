@@ -24,7 +24,7 @@ fun WeekSelected(
     state: DateRangePickerUiState,
     selectedPercentageTotalProvider: () -> Float,
     modifier: Modifier = Modifier,
-    widthPerDay: Dp = 48.dp,
+    widthPerDay: Dp = 40.dp,
     pillColor: Color = androidx.compose.material.MaterialTheme.colors.secondary
 ) {
     val widthPerDayPx = with(LocalDensity.current) { widthPerDay.toPx() }
@@ -117,9 +117,9 @@ private fun getOffsetAndSize(
 
     val offset =
         if (state.animateDirection?.isBackwards() == true) {
-            Offset((startOffset + edgePadding + rightSize) - 19F, 18f)
+            Offset((startOffset + edgePadding + rightSize), 18f)
         } else {
-            Offset((startOffset + edgePadding - leftSize) + 19F, 18f)
+            Offset((startOffset + edgePadding - leftSize), 18f)
         }
 
     return offset to totalSize
