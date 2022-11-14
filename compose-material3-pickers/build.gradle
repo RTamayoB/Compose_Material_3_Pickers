@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
@@ -48,4 +49,18 @@ dependencies {
     // If using indicators, also depend on
     implementation "com.google.accompanist:accompanist-pager-indicators:0.26.2-beta"
     implementation "com.google.accompanist:accompanist-flowlayout:0.26.3-beta"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.github.RTamayoB'
+                artifactId = 'compose-material-3-pickers'
+                version = '1.0'
+            }
+        }
+    }
 }
