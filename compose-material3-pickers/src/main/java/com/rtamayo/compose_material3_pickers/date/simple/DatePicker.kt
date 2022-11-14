@@ -82,7 +82,9 @@ internal fun DatePickerContent(
         ) {
             datePickerState.toggleInput()
         }
-        Divider()
+        Divider(
+            modifier = Modifier.fillMaxWidth()
+        )
         if(datePickerState.showCalendarInput) {
             CalendarInput(
                 datePickerState = datePickerState,
