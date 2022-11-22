@@ -60,5 +60,5 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
-    implementation(project(":compose-material3-pickers"))
+    implementation 'com.github.RTamayoB:Compose_Material_3_Pickers:1.0.2'
 }
