@@ -51,12 +51,13 @@ dependencies {
     implementation "com.google.accompanist:accompanist-flowlayout:0.26.3-beta"
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-            }
+publishing {
+    publications {
+        release(MavenPublication) {
+            from components.release
+            groupId = "com.github.RTamayoB"
+            artifactId = 'compose_material_3_pickers'
+            version = '1.0.2'
         }
     }
 }
