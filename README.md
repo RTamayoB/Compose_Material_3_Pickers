@@ -15,3 +15,13 @@ Material's Design Date Pickers following the new Material 3 Guidelines, using Je
 
 ### Date Range Input
 ![image](https://user-images.githubusercontent.com/42007283/201745449-36c7d913-493e-469f-aef7-970931cd9685.png)
+
+## Implementation
+
+To use this, just add the maven repository to your project's settings.gradle file:
+
+![image](https://user-images.githubusercontent.com/42007283/203427829-96f2e334-4140-4ac8-88d1-5f1ccf0f4dfe.png)
+
+And add this to your projects dependencies
+
+![image](https://user-images.githubusercontent.com/42007283/203427868-5e597a19-b31d-4155-8a39-fa9341b2ce68.png)
